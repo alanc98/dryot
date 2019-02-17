@@ -211,7 +211,7 @@ try:
         end_time = time.time() 
         time_diff = end_time - start_time
         time.sleep(time_diff) 
-        print '.'
+        print ('.')
 
 except KeyboardInterrupt:
     pass
