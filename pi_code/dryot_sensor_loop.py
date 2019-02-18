@@ -11,6 +11,15 @@ from   envirophat import motion, leds, weather, light
 import paho.mqtt.client as mqtt
 
 #
+# MQTT Topics published:
+# 1. dryot/dryer_state --> 'ON' or 'OFF'
+# 2. dryot/light_state --> 'ON' or 'OFF' 
+# 3. dryot/previous_dryer_runtime --> 00:00:00
+# 4. dryot/dryer_runtime --> 00:00:00
+# 5. dryot/light_level --> 000 representing Lux level
+# 6. dryot/temperature --> Temp in Celcius
+
+#
 # Parameters that can be set in the program
 # 
 # on_threshold:
@@ -33,13 +42,19 @@ import paho.mqtt.client as mqtt
 #   This is the level of light in the room that is used for the light_on/lights_off decision 
 #   Anything below this value will be considered "off"
 #
+# publish_rate: 
+#   This is the rate at which the MQTT data is publshed. The dryer runs for a while, so it might not be
+#   necessary to publish this data every second. The publish_rate is expressed in number of seconds
+#   between publishing the MQTT data.  
+#
 on_threshold      = 3
 off_threshold     = 3
 threshold         = 0.005
 light_threshold   = 50 
+publish_rate      = 2
 
 #
-# MQTT Broker address
+# MQTT Broker address. Defaults to localhost
 # 
 mqtt_broker_addr = '127.0.0.1'
 
@@ -48,6 +63,7 @@ mqtt_broker_addr = '127.0.0.1'
 # 
 samples_per_sec = 4
 loop_delay = 0.15
+debug_print = 0
 
 #
 # Global variables - Should not have to change any of these
@@ -65,6 +81,7 @@ light_state       = 0
 readings          = []
 last_z            = 0
 motion_detected   = 0
+publish_counter   = 0
 
 #
 # Probably should check to see if these mqtt calls succeed
@@ -113,12 +130,14 @@ try:
               # so count up on the threshold counter and maybe transition to on
               #
               if threshold_counter < on_threshold:
-                 print ('Bump :', threshold_counter )
+                 if debug_print == 1:
+                    print ('Bump :', threshold_counter )
                  threshold_counter += 1
               else:
                  state = 1
                  threshold_counter = 0
-                 print ('state change: From OFF to ON')
+                 if debug_print == 1:
+                    print ('state change: From OFF to ON')
            elif state == 1:
               #
               # The state is ON
@@ -147,7 +166,8 @@ try:
               # 
               if threshold_counter < off_threshold:
                  threshold_counter += 1
-                 print ('Pause :', threshold_counter )
+                 if debug_print == 1:
+                    print ('Pause :', threshold_counter )
                  # 
                  # Keep counting
                  #
@@ -167,7 +187,8 @@ try:
                  seconds_on = 0
                  minutes_on = 0
                  hours_on = 0
-                 print ('state change: From ON to OFF')
+                 if debug_print == 1:
+                    print ('state change: From ON to OFF')
 
         if light_level > light_threshold:
            light_state = 1
@@ -175,35 +196,47 @@ try:
            light_state = 0
 
         # 
-        # Report data to MQTT server
+        # Publish data to MQTT server
         #
-        if state == 0:
-           print ('Dryer is OFF')
-           mqtt_client.publish('dryot/dryer_state', 'OFF')
-        else:
-           print ('Dryer is ON')
-           mqtt_client.publish('dryot/dryer_state', 'ON')
+        if publish_counter == publish_rate: 
+           publish_counter = 0
+           if state == 0:
+              if debug_print == 1:
+                 print ('Dryer is OFF')
+              mqtt_client.publish('dryot/dryer_state', 'OFF')
+           else:
+              if debug_print == 1:
+                 print ('Dryer is ON')
+              mqtt_client.publish('dryot/dryer_state', 'ON')
 
-        previous_dryer_runtime = str(saved_hours_on) + ':' + str(saved_minutes_on) + ':' + str(saved_seconds_on)
-        # print('Last Dryer Runtime: ' + previous_dryer_runtime)
-        mqtt_client.publish('dryot/previous_dryer_runtime', previous_dryer_runtime)
+           previous_dryer_runtime = '{:02d}'.format(saved_hours_on) + ':' + '{:02d}'.format(saved_minutes_on) + ':' + '{:02d}'.format(saved_seconds_on)
+           if debug_print == 1:
+              print('Last Dryer Runtime: ' + previous_dryer_runtime)
+           mqtt_client.publish('dryot/previous_dryer_runtime', previous_dryer_runtime)
 
-        dryer_runtime = str(hours_on) + ':' + str(minutes_on) + ':' + str(seconds_on)
-        # print('Current Dryer Runtime: ' + dryer_runtime)
-        mqtt_client.publish('dryot/dryer_runtime', dryer_runtime)
+           dryer_runtime = '{:02d}'.format(hours_on) + ':' + '{:02d}'.format(minutes_on) + ':' + '{:02d}'.format(seconds_on)
+           if debug_print == 1:
+              print('Current Dryer Runtime: ' + dryer_runtime)
+           mqtt_client.publish('dryot/dryer_runtime', dryer_runtime)
 
-        # print('Light Level : ', light_level)
-        mqtt_client.publish('dryot/light_level', str(light_level))
+           if debug_print == 1:
+              print('Light Level : ', light_level)
+           mqtt_client.publish('dryot/light_level', str(light_level))
 
-        if light_state == 0:
-           # print ('Lights are OFF')
-           mqtt_client.publish('dryot/light_state', 'OFF')
-        else:
-           # print('lights are ON') 
-           mqtt_client.publish('dryot/light_state', 'ON')
+           if light_state == 0:
+              if debug_print == 1:
+                 print ('Lights are OFF')
+              mqtt_client.publish('dryot/light_state', 'OFF')
+           else:
+              if debug_print == 1:
+                 print('lights are ON') 
+              mqtt_client.publish('dryot/light_state', 'ON')
         
-        mqtt_client.publish('dryot/temperature', '{:.2f}'.format(temp))
-        # print('Temperature: %2.3f C' % temp) 
+           mqtt_client.publish('dryot/temperature', '{:.2f}'.format(temp))
+           if debug_print == 1:
+              print('Temperature: %2.3f C' % temp) 
+        else:
+           publish_counter += 1
 
         # 
         # Sleep for the rest of the second
@@ -211,7 +244,8 @@ try:
         end_time = time.time() 
         time_diff = end_time - start_time
         time.sleep(time_diff) 
-        print ('.')
+        if debug_print == 1:
+           print ('.')
 
 except KeyboardInterrupt:
     pass
