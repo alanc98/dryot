@@ -25,8 +25,8 @@ import paho.mqtt.client as mqtt
 # on_threshold:
 #  The number of seconds of detected motion before the program decides that the dryer is on. 
 #  Since the dryer will be on for at least 20-30 minutes, it is not unreasonable to make this
-#  3 or more seconds. This keeps it from thinking the Dryer is turning on when you are loading
-#  it or opening/closing the door. My dryer is not the smoothest, so 3 seems to work fine. 
+#  10 or more seconds. This keeps it from deciding the Dryer is on when you are loading
+#  it or opening/closing the door. My dryer is not the smoothest, so 10 seems to work fine. 
 # 
 # off_threshold: 
 #  The number of seconds of idle readings before the program decides its off.
@@ -47,7 +47,7 @@ import paho.mqtt.client as mqtt
 #   necessary to publish this data every second. The publish_rate is expressed in number of seconds
 #   between publishing the MQTT data.  
 #
-on_threshold      = 3
+on_threshold      = 10 
 off_threshold     = 3
 threshold         = 0.005
 light_threshold   = 50 
