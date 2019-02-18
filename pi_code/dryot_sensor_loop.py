@@ -198,7 +198,7 @@ try:
         # 
         # Publish data to MQTT server
         #
-        if publish_counter == publish_rate: 
+        if publish_counter == publish_rate - 1: 
            publish_counter = 0
            if state == 0:
               if debug_print == 1:
