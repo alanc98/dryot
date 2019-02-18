@@ -51,7 +51,7 @@ on_threshold      = 10
 off_threshold     = 3
 threshold         = 0.005
 light_threshold   = 50 
-publish_rate      = 2
+publish_rate      = 5
 
 #
 # MQTT Broker address. Defaults to localhost
