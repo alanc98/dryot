@@ -99,8 +99,10 @@ def mqtt_on_message(client, userdata, message):
       aio_client.publish('dryot.dryer-runtime', payload_str)
    elif message.topic == 'dryot/previous_dryer_runtime':
       print('Previous Dryer Runtime = ' + payload_str)
+      aio_client.publish('dryot.previous-dryer-runtime', payload_str)
    elif message.topic == 'dryot/light_level':
       print('Light Level = ' + payload_str)
+      aio_client.publish('dryot.light-level', payload_str)
    elif message.topic == 'dryot/temperature':
       print('Temperature = ' + payload_str)
       aio_client.publish('dryot.temperature', payload_str)
