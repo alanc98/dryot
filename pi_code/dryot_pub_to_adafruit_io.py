@@ -21,10 +21,12 @@
 
 #
 # Adafruit mqtt topics 
-# 1. dryot.dryer-state   --> 0 or 1
-# 2. dryot.light-state   --> 0 or 1
-# 3. dryot.dryer-runtime --> 00:00:00 
-# 4. dryot.temperature   --> 00.00 
+# 1. dryot.dryer-state            --> 0 or 1
+# 2. dryot.light-state            --> 0 or 1
+# 3. dryot.dryer-runtime          --> 00:00:00 
+# 4. dryot.temperature            --> 00.00 
+# 5. dryot.previous-dryer-runtime --> 00:00:00
+# 6. dryot.light-level            --> 000
 #
 
 # Import standard python modules.
@@ -82,29 +84,29 @@ def mqtt_on_message(client, userdata, message):
    print (' Payload = ' + payload_str )
    if message.topic == 'dryot/dryer_state':
       if payload_str == 'ON':
-         print ('Dryer is ON') 
+         # print ('Dryer is ON') 
          aio_client.publish('dryot.dryer-state', '1')
       elif payload_str == 'OFF':
-         print ('Dryer is OFF')
+         # print ('Dryer is OFF')
          aio_client.publish('dryot.dryer-state', '0')
    elif message.topic == 'dryot/light_state':
       if payload_str == 'ON':
-         print ('Light is ON') 
+         # print ('Light is ON') 
          aio_client.publish('dryot.light-state', '1')
       elif payload_str == 'OFF':
-         print ('Light is OFF')
+         # print ('Light is OFF')
          aio_client.publish('dryot.light-state', '0')
    elif message.topic == 'dryot/dryer_runtime':
-      print('Dryer Runtime = ' + payload_str)
+      # print('Dryer Runtime = ' + payload_str)
       aio_client.publish('dryot.dryer-runtime', payload_str)
    elif message.topic == 'dryot/previous_dryer_runtime':
-      print('Previous Dryer Runtime = ' + payload_str)
+      # print('Previous Dryer Runtime = ' + payload_str)
       aio_client.publish('dryot.previous-dryer-runtime', payload_str)
    elif message.topic == 'dryot/light_level':
-      print('Light Level = ' + payload_str)
+      # print('Light Level = ' + payload_str)
       aio_client.publish('dryot.light-level', payload_str)
    elif message.topic == 'dryot/temperature':
-      print('Temperature = ' + payload_str)
+      # print('Temperature = ' + payload_str)
       aio_client.publish('dryot.temperature', payload_str)
    else:
       print('Unknown message')
@@ -143,7 +145,6 @@ mqtt_client.subscribe('dryot/dryer_runtime')
 mqtt_client.subscribe('dryot/previous_dryer_runtime')
 mqtt_client.subscribe('dryot/light_level')
 mqtt_client.subscribe('dryot/temperature')
-
 
 #
 # Main loop will just sit idle
