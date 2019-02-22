@@ -40,13 +40,10 @@ from   Adafruit_IO import MQTTClient
 # Import Paho MQTT client 
 import paho.mqtt.client as mqtt
 
-# Set to your Adafruit IO key.
+# Set to your Adafruit IO key and user name.
 # Remember, your key is a secret,
 # so make sure not to publish it when you publish this code!
-ADAFRUIT_IO_KEY = 'PUT_YOUR_KEY_HERE'
-
-# Set to your Adafruit IO username.
-# (go to https://accounts.adafruit.com to find your username)
+ADAFRUIT_IO_KEY = 'PUT_YOUR_ADAFRUIT_IO_KEY_HERE'
 ADAFRUIT_IO_USERNAME = 'PUT_YOUR_ADAFRUIT_IO_USERNAME_HERE'
 
 # Set to your local MQTT broker address
@@ -68,25 +65,13 @@ mqtt_broker_address = '127.0.0.1'
 #
 # But for now, the compromise is the hard coded variables
 #
-publish_max = 5
-# 
-dryer_state_count = 0
-dryer_state_max   = publish_max
-
-light_state_count = 0
-light_state_max   = publish_max
-
-dryer_runtime_count = 0
-dryer_runtime_max   = publish_max
-
-dryer_prev_runtime_count = 0
-dryer_prev_runtime_max   = publish_max
-
-temperature_count = 0
-temperature_max   = publish_max
-
-light_level_count = 0
-light_level__max   = publish_max
+_publish_max = 5
+_dryer_state_count = 0
+_light_state_count = 0
+_dryer_runtime_count = 0
+_dryer_prev_runtime_count = 0
+_temperature_count = 0
+_light_level_count = 0
 
 # Define callback functions which will be called when certain events happen.
 def aio_connected(client):
@@ -110,6 +95,14 @@ def aio_message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
 
 def mqtt_on_message(client, userdata, message):
+   global _publish_max
+   global _dryer_state_count
+   global _light_state_count
+   global _dryer_runtime_count
+   global _dryer_prev_runtime_count
+   global _temperature_count
+   global _light_level_count
+
    #
    # This is the MQTT client message recieive callback
    # Publish selected messages to Adafruit.IO 
@@ -117,8 +110,8 @@ def mqtt_on_message(client, userdata, message):
    payload_str = message.payload.decode() 
    # print (' Payload = ' + payload_str )
    if message.topic == 'dryot/dryer_state':
-      if dryer_state_count == dryer_state_max:
-         dryer_state_count = 0
+      if _dryer_state_count == _publish_max:
+         _dryer_state_count = 0
          if payload_str == 'ON':
             # print ('Dryer is ON') 
             aio_client.publish('dryot.dryer-state', '1')
@@ -126,10 +119,10 @@ def mqtt_on_message(client, userdata, message):
             # print ('Dryer is OFF')
             aio_client.publish('dryot.dryer-state', '0')
       else:
-         dryer_state_count += 1 
+         _dryer_state_count += 1 
    elif message.topic == 'dryot/light_state':
-      if light_state_count == light_state_max:
-         light_state_count = 0
+      if _light_state_count == _publish_max:
+         _light_state_count = 0
          if payload_str == 'ON':
             # print ('Light is ON') 
             aio_client.publish('dryot.light-state', '1')
@@ -137,35 +130,35 @@ def mqtt_on_message(client, userdata, message):
             # print ('Light is OFF')
             aio_client.publish('dryot.light-state', '0')
       else:
-         light_state_count += 1 
+         _light_state_count += 1 
    elif message.topic == 'dryot/dryer_runtime':
-      if dryer_runtime_count == dryer_runtime_max:
-         dryer_runtime_count = 0
+      if _dryer_runtime_count == _publish_max:
+         _dryer_runtime_count = 0
          # print('Dryer Runtime = ' + payload_str)
          aio_client.publish('dryot.dryer-runtime', payload_str)
       else:
-         dryer_runtime_count += 1
+         _dryer_runtime_count += 1
    elif message.topic == 'dryot/previous_dryer_runtime':
-      if dryer_prev_runtime_count == dryer_prev_runtime_max:
-         dryer_prev_runtime_count = 0
+      if _dryer_prev_runtime_count == _publish_max:
+         _dryer_prev_runtime_count = 0
          # print('Previous Dryer Runtime = ' + payload_str)
          aio_client.publish('dryot.previous-dryer-runtime', payload_str)
       else:
-         dryer_prev_runtime_count += 1
+         _dryer_prev_runtime_count += 1
    elif message.topic == 'dryot/light_level':
-      if light_level_count == light_level_max:
-         light_level_count = 0
+      if _light_level_count == _publish_max:
+         _light_level_count = 0
          # print('Light Level = ' + payload_str)
          aio_client.publish('dryot.light-level', payload_str)
       else:
-         light_level_count += 1
+         _light_level_count += 1
    elif message.topic == 'dryot/temperature':
-      if temperature_count == temperature_max:
-         temperature_count = 0
+      if _temperature_count == _publish_max:
+         _temperature_count = 0
          # print('Temperature = ' + payload_str)
          aio_client.publish('dryot.temperature', payload_str)
       else:
-         temperature_count += 1
+         _temperature_count += 1
    else:
       print('Unknown message')
 
