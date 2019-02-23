@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #
-# Subscribe to MQTT topics and re-publish the data to Adafruit.IO
+# Subscribe to DryOT MQTT topics and re-publish the data to Adafruit.IO
 # Author: Alan Cudmore
 # 
 
@@ -11,7 +11,7 @@
 # Author: Tony DiCola
 # Copyright 2015 Adafruit, see the LICENSE file
 #
-# MQTT Topics subscribed to:
+# Subscribe to the following MQTT Topics:
 # 1. dryot/dryer_state --> 'ON' or 'OFF'
 # 2. dryot/light_state --> 'ON' or 'OFF'
 # 3. dryot/previous_dryer_runtime --> 00:00:00
@@ -20,7 +20,7 @@
 # 6. dryot/temperature --> Temp in Celcius
 
 #
-# Adafruit mqtt topics 
+# Publish the data to the following Adafruit.io MQTT topics:
 # 1. dryot.dryer-state            --> 0 or 1
 # 2. dryot.light-state            --> 0 or 1
 # 3. dryot.dryer-runtime          --> 00:00:00 
@@ -29,7 +29,9 @@
 # 6. dryot.light-level            --> 000
 #
 
+#
 # Import standard python modules.
+@
 import random
 import sys
 import time
@@ -53,7 +55,7 @@ mqtt_broker_address = '127.0.0.1'
 
 #
 # A set of variables to represent publish rate for each Adafruit.io feed
-# The MQTT messages might be to fast for the Adafruit.io feeds, especially if
+# The MQTT messages might be too fast for the Adafruit.io feeds, especially if
 # on a free account.
 # Based on these variables, the every nth message will be sent on to MQTT 
 # 
@@ -94,6 +96,10 @@ def aio_message(client, feed_id, payload):
     # project.
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
 
+#
+# Most of the work is done in the on_message function
+# The function is called when an MQTT message is received
+#
 def mqtt_on_message(client, userdata, message):
    global _publish_max
    global _dryer_state_count
@@ -105,7 +111,11 @@ def mqtt_on_message(client, userdata, message):
 
    #
    # This is the MQTT client message recieive callback
-   # Publish selected messages to Adafruit.IO 
+   # Re-publish selected messages to Adafruit.IO
+   # There is also code to control the rate that the messages
+   # are re-published to Adafruit.io.
+   # For each topic, a counter is kept, so only the nth
+   #  message is sent.
    #
    payload_str = message.payload.decode() 
    # print (' Payload = ' + payload_str )
