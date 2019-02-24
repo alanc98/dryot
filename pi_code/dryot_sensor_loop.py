@@ -243,7 +243,8 @@ try:
         #
         end_time = time.time() 
         time_diff = end_time - start_time
-        time.sleep(time_diff) 
+        sleep_time = 1 - time_diff
+        time.sleep(sleep_time) 
         if debug_print == 1:
            print ('.')
 
