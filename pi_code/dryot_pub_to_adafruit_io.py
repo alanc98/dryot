@@ -31,7 +31,7 @@
 
 #
 # Import standard python modules.
-@
+#
 import random
 import sys
 import time
@@ -67,7 +67,7 @@ mqtt_broker_address = '127.0.0.1'
 #
 # But for now, the compromise is the hard coded variables
 #
-_publish_max = 5
+_publish_max = 12
 _dryer_state_count = 0
 _light_state_count = 0
 _dryer_runtime_count = 0
