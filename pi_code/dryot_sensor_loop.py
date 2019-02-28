@@ -8,6 +8,7 @@
 
 import time
 from   envirophat import motion, leds, weather, light
+from   configparser import ConfigParser
 import paho.mqtt.client as mqtt
 
 #
@@ -21,6 +22,7 @@ import paho.mqtt.client as mqtt
 
 #
 # Parameters that can be set in the program
+# NOTE: All of these options are set in the dryot.ini file
 # 
 # on_threshold:
 #  The number of seconds of detected motion before the program decides that the dryer is on. 
@@ -33,7 +35,7 @@ import paho.mqtt.client as mqtt
 #  This will help even out false readings from the accelerometer. If your dryer is very smooth
 #  you might need to raise this number. But it's OK if the dryer is on for 30+ minutes.
 # 
-# threshold:
+# motion_threshold:
 #  This is the difference between accelerometer readings used to determine if motion has been detected
 #  If you want to make this more sensitive for a smoother dryer, you can make this value smaller. 
 #  0.005 seems to work well for my dryer, since it is not that smooth. 
@@ -49,7 +51,7 @@ import paho.mqtt.client as mqtt
 #
 on_threshold      = 10 
 off_threshold     = 3
-threshold         = 0.005
+sensor_threshold  = 0.005
 light_threshold   = 50 
 publish_rate      = 5
 
@@ -83,7 +85,45 @@ last_z            = 0
 motion_detected   = 0
 publish_counter   = 0
 
+
+####################################################################
+# Parse options from config file
 #
+parser = ConfigParser()
+parser.read('/home/pi/dryot/pi_code/dryot.ini')
+
+if parser.has_section('primary') == True:
+    if parser.has_option('primary', 'on_threshold') == True:
+        on_threshold = parser.getint('primary', 'on_threshold')
+
+    if parser.has_option('primary', 'off_threshold') == True:
+        off_threshold = parser.getint('primary', 'off_threshold')
+
+    if parser.has_option('primary', 'motion_threshold') == True:
+        motion_threshold = parser.getfloat('primary', 'motion_threshold')
+
+    if parser.has_option('primary', 'light_threshold') == True:
+        light_threshold = parser.getint('primary', 'light_threshold')
+
+    if parser.has_option('primary', 'publish_rate') == True:
+        publish_rate = parser.getint('primary', 'publish_rate')
+
+if parser.has_section('mqtt') == True:
+    if parser.has_option('mqtt', 'mqtt_broker_addr') == True:
+        mqtt_broker_addr = parser.get('mqtt', 'mqtt_broker_addr')
+
+if parser.has_section('sensor') == True:
+    if parser.has_option('sensor', 'samples_per_second') == True:
+        samples_per_second = parser.getint('sensor', 'samples_per_second')
+
+    if parser.has_option('sensor', 'loop_delay') == True:
+        loop_delay = parser.getfloat('sensor', 'loop_delay')
+
+    if parser.has_option('sensor', 'debug_print') == True:
+        debug_print = parser.getint('sensor', 'debug_print')
+
+#
+# Connect to the MQTT server
 # Probably should check to see if these mqtt calls succeed
 #
 mqtt_client = mqtt.Client("DRYOT")
@@ -106,13 +146,11 @@ try:
            readings.append(accel_z)
            readings = readings[-4:]
            z = sum(readings) / len(readings)
-           if last_z > 0 and abs(z-last_z) > threshold:
+           if last_z > 0 and abs(z-last_z) > sensor_threshold:
                motion_detected = 1
-               # leds.on()
            last_z = z
            # Make sure this delay matches the number of samples per second
            time.sleep(loop_delay)
-           # leds.off()
 
         #
         # Get light and temperature data
