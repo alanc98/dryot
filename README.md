@@ -10,11 +10,13 @@
 # This project is completely documented in a series of YouTube videos:
 1. Project Introduction and Assembly: 
 
-   http://img.youtube.com/vi/7Y_-u9VHjI0/0.jpg
+   [![](http://img.youtube.com/vi/7Y_-u9VHjI0/0.jpg)](http://www.youtube.com/watch?v=7Y_-u9VHjI0 "DryOT Project Part 1")
+
 
 2. Software Setup:
-   https://www.youtube.com/watch?v=UATDyMtNh9s&t=1289s 
 
+   [![](http://img.youtube.com/vi/UATDyMtNh9s/0.jpg)](http://www.youtube.com/watch?v=UATDyMtNh9s "DryOT Project Part 2")
+ 
 3. Programming Logic: 
    (TBD)
  
