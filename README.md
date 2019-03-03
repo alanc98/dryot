@@ -1,13 +1,22 @@
 # dryot
-Dryer IOT Raspberry Pi Project
-
+  # Dryer IOT Raspberry Pi Project
 
 # Copyright and License:
- - The Adafruit.io publishing code is based on the example by Adafruit (c) 2015
+ - The Adafruit.io code is based on the mqtt example by Adafruit (c) 2015
  - The dryot sensor code is based on the envirophat motion detection example (c) Pimoroni 2017
- - My original code (if any) and my 3d Design are covered by the MIT license to be compatible with the Adafruit Pimoroni code
+ - My original code and my 3d Design are covered by the MIT license to be compatible with the Adafruit and Pimoroni code
  - See the file LICENSE
 
+# This project is completely documented in a series of YouTube videos:
+1. Project Introduction and Assembly: 
+   https://www.youtube.com/watch?v=7Y_-u9VHjI0&t=177s
+
+2. Software Setup:
+   https://www.youtube.com/watch?v=UATDyMtNh9s&t=1289s 
+
+3. Programming Logic: 
+   (TBD)
+ 
 # Installation:
 - The python programs in this repository depend on a number of libraries:
   - paho-mqtt python library
@@ -15,30 +24,30 @@ Dryer IOT Raspberry Pi Project
     $ sudo pip3 install paho-mqtt
     ```
   - Adafruit IO Python library
-  ```
-  sudo pip3 install adafruit-io
-  ```
+    ```
+    sudo pip3 install adafruit-io
+    ```
   - The Pimoroni EnviroPHAT support code and examples:
-  ```
-  $ curl https://get.pimoroni.com/envirophat | bash
-  ```
+    ```
+    $ curl https://get.pimoroni.com/envirophat | bash
+    ```
 
   - Clone this repository
-  ```
-  $ git clone https://github.com/alanc98/dryot.git
-  ```
+    ```
+    $ git clone https://github.com/alanc98/dryot.git
+    ```
 - Make sure you look at the options in the following files:
-  - dryot/pi_code/dryot.ini
-  - dryot/pi_code/adafruit.io
+    ```
+    dryot/pi_code/dryot.ini
+    dryot/pi_code/adafruit.io
+    ```
 
-- Finally, if you want the programs to startup when the Pi boots, add the following to /etc/rc.local
-```
-python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
+- Finally, if you want the programs to startup when the Pi boots, add the following to the bottom of */etc/rc.local*
+  ```
+  python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
 
-# Optional, if you want to publish to adafruit.io feeds
-python3 /home/pi/dryot/pi_code/dryot_pub_to_adafruit_io.py &
-```
+  # Optional, add this if you want to publish to adafruit.io feeds
+  python3 /home/pi/dryot/pi_code/dryot_pub_to_adafruit_io.py &
+  ```
 
-# This project is completely documented in a series of YouTube videos:
-1. introduction:
 
