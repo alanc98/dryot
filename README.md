@@ -7,7 +7,7 @@
  - My original code and my 3d Design are covered by the MIT license to be compatible with the Adafruit and Pimoroni code
  - See the file LICENSE
 
-# This project is completely documented in a series of YouTube videos:
+# This project is documented in a series of YouTube videos:
 1. Project Introduction and Assembly: 
 
    [![](http://img.youtube.com/vi/7Y_-u9VHjI0/0.jpg)](http://www.youtube.com/watch?v=7Y_-u9VHjI0 "DryOT Project Part 1")
@@ -17,7 +17,7 @@
 
    [![](http://img.youtube.com/vi/UATDyMtNh9s/0.jpg)](http://www.youtube.com/watch?v=UATDyMtNh9s "DryOT Project Part 2")
  
-3. Programming Logic: 
+3. Programming: 
    (TBD)
  
 # Installation:
@@ -46,11 +46,10 @@
     ```
 
 4. Finally, if you want the programs to startup when the Pi boots, add the following to the bottom of */etc/rc.local*
-  ```
-  python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
+   ```
+   python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
 
-  # Optional, add this if you want to publish to adafruit.io feeds
-  python3 /home/pi/dryot/pi_code/dryot_pub_to_adafruit_io.py &
-  ```
-
+   # Optional, add this if you want to publish to adafruit.io feeds
+   python3 /home/pi/dryot/pi_code/dryot_pub_to_adafruit_io.py &
+   ```
 
