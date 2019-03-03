@@ -42,7 +42,7 @@
 3. Make sure you look at the options in the following files:
     ```
     dryot/pi_code/dryot.ini
-    dryot/pi_code/adafruit.io
+    dryot/pi_code/adafruitio.ini
     ```
 
 4. Finally, if you want the programs to startup when the Pi boots, add the following to the bottom of */etc/rc.local*
