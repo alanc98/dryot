@@ -10,25 +10,29 @@ Copyright and License:
 
 Installation:
 - The python programs in this repository depend on a number of libraries:
--- paho-mqtt python library
+  - paho-mqtt python library
 ```
 $ sudo pip3 install paho-mqtt
 
--- Adafruit IO Python library
+
+  - Adafruit IO Python library
 ```
 sudo pip3 install adafruit-io
 
--- The Pimoroni EnviroPHAT support code and examples:
+
+  - The Pimoroni EnviroPHAT support code and examples:
 ```
 $ curl https://get.pimoroni.com/envirophat | bash
 
-- Clone this repository
+
+  - Clone this repository
 ```
 $ git clone https://github.com/alanc98/dryot.git
 
+
 - Make sure you look at the options in the following files:
--- dryot/pi_code/dryot.ini
--- dryot/pi_code/adafruit.io
+  - dryot/pi_code/dryot.ini
+  - dryot/pi_code/adafruit.io
 
 - Finally, if you want the programs to startup when the Pi boots, add the following to /etc/rc.local
 ```
