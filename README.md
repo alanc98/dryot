@@ -9,7 +9,8 @@
 
 # This project is completely documented in a series of YouTube videos:
 1. Project Introduction and Assembly: 
-   https://www.youtube.com/watch?v=7Y_-u9VHjI0&t=177s
+
+   http://img.youtube.com/vi/7Y_-u9VHjI0/0.jpg
 
 2. Software Setup:
    https://www.youtube.com/watch?v=UATDyMtNh9s&t=1289s 
@@ -18,7 +19,7 @@
    (TBD)
  
 # Installation:
-- The python programs in this repository depend on a number of libraries:
+1. Install libraries
   - paho-mqtt python library
     ```
     $ sudo pip3 install paho-mqtt
@@ -32,17 +33,17 @@
     $ curl https://get.pimoroni.com/envirophat | bash
     ```
 
-  - Clone this repository
+2. Clone this repository
     ```
     $ git clone https://github.com/alanc98/dryot.git
     ```
-- Make sure you look at the options in the following files:
+3. Make sure you look at the options in the following files:
     ```
     dryot/pi_code/dryot.ini
     dryot/pi_code/adafruit.io
     ```
 
-- Finally, if you want the programs to startup when the Pi boots, add the following to the bottom of */etc/rc.local*
+4. Finally, if you want the programs to startup when the Pi boots, add the following to the bottom of */etc/rc.local*
   ```
   python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
 
