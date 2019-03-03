@@ -47,9 +47,9 @@
 
 4. Finally, if you want the programs to startup when the Pi boots, add the following to the bottom of */etc/rc.local*
    ```
-   python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
+   sudo -H -u pi /usr/bin/python3 /home/pi/dryot/pi_code/dryot_sensor_loop.py &
 
    # Optional, add this if you want to publish to adafruit.io feeds
-   python3 /home/pi/dryot/pi_code/dryot_pub_to_adafruit_io.py &
+   sudo -H -u pi /usr/bin/python3 /home/pi/dryot/pi_code/dryot_pub_to_adafruit_io.py &
    ```
 
