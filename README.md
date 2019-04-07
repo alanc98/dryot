@@ -17,8 +17,10 @@
 
    [![](http://img.youtube.com/vi/UATDyMtNh9s/0.jpg)](http://www.youtube.com/watch?v=UATDyMtNh9s "DryOT Project Part 2")
  
-3. Programming: 
-   (TBD)
+3. Programming and Test: 
+
+   [![](http://img.youtube.com/vi/igWmXGd0SnQ/0.jpg)](http://www.youtube.com/watch?v=igWmXGd0SnQ "DryOT Project Part 3")
+
  
 # Installation:
 1. Install libraries
